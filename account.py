@@ -1,11 +1,13 @@
 
 # Order Format
 # 0 / timestamp
-# 1 / mpid
-# 2 / contractID
-# 3 / price
-# 4 / side
-# 5 / [red, inc]
+# 1 / orderID
+# 2 / mpid
+# 3 / contractID
+# 4 / price
+# 5 / side
+# 6 / [red, inc]
+# 7 / [head, tail]
 
 class account:
     def __init__(self, _master, _mpid):
