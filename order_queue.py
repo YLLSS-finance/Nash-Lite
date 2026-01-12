@@ -30,19 +30,6 @@ class order_queue:
             price_links[1] = tail_price
             self.levels[tail_price][0][0] = price
             
-    def remove_price_level(self, price):
-        price_links, level_data = self.levels[price]
-        del self.levels[price]
-        if not price_links:
-            self.best_price_cache = [None, None]
-            return 
-        
-        head_price, tail_price = price_links
-        if self.best_price_cache[0] == price:
-            self.best_price_cache[0] = tail_price
-        if self.best_price_cache[1] == price:
-            self.best_price_cache[1] = head_price
-    
     def add_order(self, order):
         timestamp, order_id, mpid, contractID, price, side, qty, links = order
         # There is no need to add an order to the book if it has nothing to be filled
@@ -61,9 +48,27 @@ class order_queue:
     
     def remove_order(self, order):
         timestamp, order_id, mpid, contractID, price, side, qty, links = order
-        level_ends, level_data = self.levels[price]
+        price_links, level_data = self.levels[price]
         head_order, tail_order = level_data[0:2]
         
         if not head_order is None: head_order[7][1] = order
         if not tail_order is None: tail_order[7][0] = order
         
+        if level_data[0] == order: level_data[0] = order[1]
+        if level_data[1] == order: level_data[1] = order[0]
+    
+        level_data[3] -= 1
+        
+        if not level_data[3]:
+            price_links, level_data = self.levels[price]
+            del self.levels[price]
+            if price_links == [None, None]: 
+                self.best_price_cache = [None, None]
+                return 
+        
+            head_price, tail_price = price_links
+            if self.best_price_cache[0] == price: self.best_price_cache[0] = tail_price
+            if self.best_price_cache[1] == price: self.best_price_cache[1] = head_price
+        
+            if not head_price is None: self.levels[head_price][1] = tail_price
+            if not tail_price is None: self.levels[tail_price][0] = head_price
