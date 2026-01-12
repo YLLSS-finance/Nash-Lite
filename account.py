@@ -31,10 +31,10 @@ class account:
         # Remove the order from the book
         self.contracts[contract].remove_order(order)
         
-        order_red, order_inc = order[5]
-        order_side = order[4]
-        order_price = order[3]
-        order_contract = order[2]
+        order_red, order_inc = order[6]
+        order_side = order[5]
+        order_price = order[4]
+        order_contract = order[3]
         
         if order_red and (not order_contract in self.positions):
             raise Exception('Fatal error')
@@ -73,4 +73,3 @@ class account:
         order = [timestamp, self.mpid, contract, price, side, [red, inc]]
         orders[side] = order
         self.contracts[contract].add_order(order)
-        
