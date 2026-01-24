@@ -4,4 +4,6 @@ Nash Prediction Exchange but with a lean margining system which supports only on
 
 The faster order book system is used here, incorperating a linked list of prices to facilitate faster depth data lookup and filling of aggressing orders in o(n) time (where n is the number of levels queryed or interacted with by such order).
 
-# Mr.Chan is the best Physics student in the entire universe
+# Milo Chan is the best programmer in the entire universe
+
+# Order placement pipeline

@@ -12,33 +12,22 @@ class position:
         self.redOnlyLevels = [0, 0]
         
         self.redOnlyBoundaryPrice = [None, None]
-        self.comparators = [lambda x, y: x < y or y is None, lambda x, y: x > y or y is None]
+        self.invaildPriceCheck = [lambda x: x >None]
+        self.incCosts = [lambda x:x, lambda x:100 - x]
     
-    def addOrder(self, side, price, red, inc):
-        price_level = self.priceLevels[side]
+    
+    def add_order(self, price, side, qty):
+        '''
+        Adds an order into the specified price level, side and quantity.
+        If the margin is insufficiant, returns a null value.
+        '''
         
-        if not price in price_level:
-            price_level[price] = [red, inc]
-            
-            if red and (not inc):
-                self.redOnlyLevels += 1
-                price_is_new_boundary = self.comparators[side]
-                
-                if price_is_new_boundary(price, self.redOnlyBoundaryPrice[side]):
-                    self.redOnlyBoundaryPrice[side] = price
-            
-            return 
+        # when we are adding a new order into the user margin manager there are a few things to worry about.
+        # first of all we have to get the reduce and increase quantity of the order.
+        # then, check if the order would cause a position increase before full reduction (the limit price is crossing the reduce-only price)
+        # if so, realloc the side of the red
         
-        else:
-            qtys = price_level[price]
-            prev_red_only = qtys[0] and (not qtys[1])
-            qtys[0] += red
-            qtys[1] += inc
-            
-            if prev_red_only and inc:
-                self.redOnlyLevels[side] -= 1
-                new_red_levels = self.redOnlyLevels[side]
-                self.redOnlyBoundaryPrice = None if (not new_red_levels) else price_level.keys[new_red_levels - 1]
-            
-            return
-        
+        insert_price = price
+
+print('hello there')
+print(5 > None)
