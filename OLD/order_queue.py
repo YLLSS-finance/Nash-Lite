@@ -28,6 +28,7 @@ class order_queue:
         if price_index < index_length - 1:
             tail_price = prices[price_index + 1]
             price_links[1] = tail_price
+            
             self.levels[tail_price][0][0] = price
             
     def add_order(self, order):
